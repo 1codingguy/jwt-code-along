@@ -1,16 +1,17 @@
 const CustomAPIError = require('../errors/custom-error')
+const { BadRequestError } = require('../errors')
 const jwt = require('jsonwebtoken')
 
 const login = async (req, res) => {
   const { username, password } = req.body
   if (!username || !password) {
     // throw an error if either one invalid
-    throw new CustomAPIError('username or password not valid', 400)
+    throw new BadRequestError('username or password not valid')
   }
   // create a json web token if both are valid
   // id normally provided by DB
   const id = new Date().getDate()
-
+ 
   const token = jwt.sign({ id, username }, process.env.JWT_STRING, {
     expiresIn: '30d',
   })
